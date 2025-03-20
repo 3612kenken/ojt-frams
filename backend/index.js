@@ -69,7 +69,7 @@ mongoose
 
     // CreateLog("CL-2024-007", new Date(), "07:30", "11:30", "12:30", "05:00", "06:00", "06:30", "Over Time");
 
-    const logs = {
+        const logs = {
             employee_id, 
             day, 
             time_in_am, 

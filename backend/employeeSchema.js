@@ -28,8 +28,7 @@ const employeeSchema = new mongoose.Schema({
     email:{
         type: String,
         required: false
-    }
-    ,
+    },
     date_entry:{
         type: Date,
         required: true
