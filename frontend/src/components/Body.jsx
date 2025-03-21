@@ -1,7 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
 import  "./style.css";
 import LogTable from "./LogTable";
 export default function Body(){
+
+    const [emps, setEmps] = useState([]);  // State to store the logs
+      const [error, setError] = useState(null);  // State to manage errors
+    
+      // Fetch logs from the API
+      useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://localhost:5000/api/employee/CL-2024-007');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                setEmps(data);  // Set the fetched logs to state
+            } catch (error) {
+                setError(error.message);  // Handle error if any
+            }
+        };
+        
+        fetchData();
+    }, []);  // Empty dependency array means this will run only on mount
+    
+    
 
     return(
         <>
@@ -28,14 +51,15 @@ export default function Body(){
                             <div className="flex-grow-1 ms-3">
                             <h5 className="mb-2 pb-1 status-success">LOGGED IN</h5>
                             
-                            <div className="justify-content-start rounded-3 p-2 mb-2 bg-body-tertiary">
-                                <h3 className="mb-1 pb-2"> CL-2024-007</h3>
-                                <h4 className="mb-1">Kenneth Omiping</h4>
-                                <p className="mb-0 ms-1"> <i><b>University Lecturer</b></i></p>
-                                <p className="mb-0 ms-1"><i>College of Information & Computing Sciences</i></p>
-                                <p className="mb-0 ms-1"><i>omiping.kenneth@marsu.edu.ph</i></p>
-                            </div>
-                            
+                            {emps.map((emp) => (
+                                <div className="justify-content-start rounded-3 p-2 mb-2 bg-body-tertiary" key={emp._id}>
+                                    <h3 className="mb-1 pb-2"> {emp.employee_id}</h3>
+                                    <h4 className="mb-1">{emp.firstname + " " + emp.middle + " " + emp.lastname}</h4>
+                                    <p className="mb-0 ms-1"> <i><b>{emp.designation}</b></i></p>
+                                    <p className="mb-0 ms-1"><i>{emp.department}</i></p>
+                                    <p className="mb-0 ms-1"><i>{emp.email}</i></p>
+                                </div>
+                              ))}
                             </div>
                         </div>
 
